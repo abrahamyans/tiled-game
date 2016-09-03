@@ -5,13 +5,12 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('game-web:server');
 var http = require('http');
-
+var logger = require('log4js').getLogger(module.filename);
 /**
  * Get port from environment and store in Express.
  */
-
+logger.info("Starting the HTTP server");
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -86,5 +85,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }
