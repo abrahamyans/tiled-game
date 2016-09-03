@@ -7,7 +7,6 @@ var express = require('express');
 var route = express.Router();
 var roomManager = require('../../game-facade').roomManager;
 var logger = require('log4js').getLogger(module.filename);
-var validator = require('express-validator');
 var util = require('util');
 logger.info('Mounting router for /room');
 
@@ -44,13 +43,15 @@ route.put('/', (req, res) => {
         })
     }
 
-    var room = roomManager.addRoom(req.body);
-
+    roomManager.addRoom(req.body);
     return res.status(200).json({
         status: "OK"
     });
-
 });
 
+
+route.get('/test', (req, res) => {
+    res.render('socket-integration-test-page');
+});
 
 module.exports = route;

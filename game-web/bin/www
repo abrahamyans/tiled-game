@@ -19,6 +19,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var socket = require('../../game-facade').socket;
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -86,4 +87,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   logger.info('Listening on ' + bind);
+  socket(server);
 }

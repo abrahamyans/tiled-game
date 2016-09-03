@@ -11,10 +11,21 @@
 var logger = require('log4js').getLogger(__filename);
 class RoomManager{
 
-    constructor(){
+    constructor() {
         this.manager = new require('../../game-rooms').roomManager;
         this.roomByAlias = {};
+        this.setupDevRoom();
     }
+
+    setupDevRoom(){
+        this.addRoom({
+            rows: 10,
+            cols: 20,
+            strategy: "simple",
+            alias: "test"
+        })
+    }
+
 
 
     addRoom(room){
