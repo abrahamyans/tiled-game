@@ -18,6 +18,9 @@ class RoomManager{
     
     addRoom(params){
         var id = idGenerator({min: 0, max: 2048}, this._rooms);
+        if (!strategies[params.strategy]){
+            throw new Error( "Strategy " + params.strategy + " does not exist")
+        }
         this._rooms[id] = new Room({
             rows: params.rows,
             cols: params.cols,

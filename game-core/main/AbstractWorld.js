@@ -53,9 +53,9 @@ class AbstractWorld {
 
     _validateClickPos(pos) {
         if (!this._isWithinBounds(pos))
-            throw new Error({message: errors.POSITION_OUT_OF_BOUNDS});
+            throw new Error( errors.POSITION_OUT_OF_BOUNDS);
         if (this.getPlayerIdAt(pos) == null)
-            throw new Error({message: errors.CLICK_AT_UNOWNED_CELL});
+            throw new Error( errors.CLICK_AT_UNOWNED_CELL);
     }
 
     _performBfs(pos) {
@@ -138,7 +138,7 @@ class AbstractWorld {
         do {
             tryCount++;
             if (tryCount >= 1000)
-                throw new Error({message: errors.FULL_ROOM});
+                throw new Error(errors.FULL_ROOM);
             var pos = {
                 row: chance.integer({
                     min: 0,
@@ -184,7 +184,7 @@ class AbstractWorld {
     }
 
     onTurn(pos) {
-        throw new Error({message: "Not implemented"});
+        throw new Error( "Not implemented");
     }
 
 }
