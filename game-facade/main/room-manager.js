@@ -7,6 +7,8 @@
 /**
  * Decorate room manager for storing room alias names
  */
+
+var logger = require('log4js').getLogger(__filename);
 class RoomManager{
 
     constructor(){
@@ -16,9 +18,13 @@ class RoomManager{
 
 
     addRoom(room){
+        if (this.roomByAlias[room.alias]){
+            throw new Error("Room with alias "+room.alias+" already exists");
+        }
         var roomId = this.manager.addRoom(room);
         this.roomByAlias[room.alias] = this.manager.getRoom(roomId);
         room.id = roomId;
+        logger.info("Room with id=%s and alias=%s was created", room.id, room.alias);
         return room;
     }
 
@@ -29,7 +35,7 @@ class RoomManager{
 
     getRoomByAlias(alias){
         if(!this.roomByAlias[alias])
-            throw new Error({message: "No room with alias name " + alias});
+            throw new Error("No room with alias name " + alias);
         return this.roomByAlias[alias];
     }
 

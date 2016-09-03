@@ -5,7 +5,7 @@
 "use strict";
 var express = require('express');
 var route = express.Router();
-var roomManager = require('../../game-socket').roomManager;
+var roomManager = require('../../game-facade').roomManager;
 var logger = require('log4js').getLogger(module.filename);
 var validator = require('express-validator');
 var util = require('util');
@@ -30,6 +30,9 @@ route.put('/', (req, res) => {
                 options: [{min: 4, max:20}]
             },
             errorMessage: "Invalid argument alias"
+        },
+        strategy: {
+            notEmpty: true
         }
     });
 
@@ -41,8 +44,10 @@ route.put('/', (req, res) => {
         })
     }
 
-    res.status(200).json({
-        message: "OPK"
+    var room = roomManager.addRoom(req.body);
+
+    return res.status(200).json({
+        status: "OK"
     });
 
 });

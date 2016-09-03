@@ -12,7 +12,7 @@ var idGenerator = require('./id-generator');
 class Room{
     
     constructor(params){
-        this._world = new params.world({
+        this._world = new (params.world)({
             rows: params.rows,
             cols: params.cols
         });
@@ -25,9 +25,7 @@ class Room{
         try {
             var id = idGenerator({min: conf.publicIdMin, max: conf.publicIdMax}, this.players);
         }catch(err){
-            throw new Error({
-                message: errors.FULL_ROOM
-            })
+            throw new Error(errors.FULL_ROOM)
         }
 
         player.publicId = id;
@@ -41,16 +39,11 @@ class Room{
         var player = this.players[playerPublicId];
         
         if (!player){
-            throw new Error({
-                message: errors.WRONG_ID,
-                id: playerPublicId
-            })
+            throw new Error(errors.WRONG_ID + playerPublicId)
         }
         
         if(this._world.getPlayerIdAt(pos) !== player.worldId){
-            throw new Error({
-                message: errors.NOT_AUTHORIZED_CLICK
-            });
+            throw new Error( errors.NOT_AUTHORIZED_CLICK);
         }
 
         return this._world.onTurn(pos);
