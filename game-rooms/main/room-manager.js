@@ -23,6 +23,7 @@ class RoomManager{
             cols: params.cols,
             world: strategies[params.strategy]
         });
+        return id;
     }
     
     getRoom(roomId){

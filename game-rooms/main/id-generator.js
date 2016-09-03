@@ -3,7 +3,7 @@
  */
 
 "use strict";
-var chance = require('chance');
+var chance = new  (require('chance'))();
 
 module.exports = (range, container, maxTries) => {
     

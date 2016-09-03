@@ -31,6 +31,7 @@ class Room{
         }
         player.publicId = id;
         this.players[id] = player;
+        return this._world.addPlayer();
     }
 
     onTurn(pos, playerPublicId){
