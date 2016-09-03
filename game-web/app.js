@@ -6,7 +6,9 @@ var logger = require('log4js').getLogger(__filename);
 var cookieParser = require('cookie-parser');
 var validator = require('express-validator');
 var bodyParser = require('body-parser');
-var socket = require('../game-facade').socket();
+
+logger.info("Initializing the express app");
+
 var app = express();
 
 //Pipe morgan to log4js
@@ -42,12 +44,23 @@ app.use(function (req, res, next) {
 
 // development error handler
 // will print stacktrace
+
+function getStatus(status){
+    switch (status){
+        case 404: return "NOT_FOUND";
+        case 500: return "SERVER_ERROR";
+        default: return "UNKNOWN_ERROR"
+    }
+
+}
+
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
+        logger.error(err.message);
         res.json({
             message: err.message,
-            status: "SERVER_ERROR"
+            status: getStatus(res.statusCode)
         });
     });
 }
