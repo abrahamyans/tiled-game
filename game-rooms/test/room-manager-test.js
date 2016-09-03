@@ -21,13 +21,13 @@ describe('Room manager test', () => {
         chai.assert.isNotNull(roomId);
     });
 
-    it('Should able to get added room', () => {
+    it('Get added room', () => {
         room = roomManager.getRoom(roomId);
         chai.assert.isNotNull(room);
     });
 
 
-    it('Should add player to room', () => {
+    it('Add player to room', () => {
         player = {name: "Hello"};
         playerAddResponse = room.addPlayer(player);
         chai.assert.isDefined(player.publicId);
@@ -37,7 +37,7 @@ describe('Room manager test', () => {
     });
 
 
-    it('Should perform turn', () => {
+    it('Perform turn', () => {
         var turnResponse = room.onTurn(playerAddResponse.positions[0], player.publicId);
         chai.assert.isArray(turnResponse.chown);
         chai.assert.isObject(turnResponse.rotate);
