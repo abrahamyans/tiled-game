@@ -29,9 +29,12 @@ class Room{
                 message: errors.FULL_ROOM
             })
         }
+
         player.publicId = id;
         this.players[id] = player;
-        return this._world.addPlayer();
+        var addPlayerResponse = this._world.addPlayer();
+        player.worldId  = addPlayerResponse.playerId;
+        return addPlayerResponse;
     }
 
     onTurn(pos, playerPublicId){
@@ -44,7 +47,7 @@ class Room{
             })
         }
         
-        if(this._world.getPlayerIdAt(pos) !== player.id){
+        if(this._world.getPlayerIdAt(pos) !== player.worldId){
             throw new Error({
                 message: errors.NOT_AUTHORIZED_CLICK
             });
