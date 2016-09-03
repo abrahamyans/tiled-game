@@ -4,8 +4,9 @@ var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var logger = require('log4js').getLogger(__filename);
 var cookieParser = require('cookie-parser');
+var validator = require('express-validator');
 var bodyParser = require('body-parser');
-var socket = require('../game-socket')();
+var socket = require('../game-socket').socket();
 var app = express();
 
 //Pipe morgan to log4js
@@ -24,6 +25,7 @@ app.set('view engine', 'jade');
 app.use(httpLogger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(validator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
