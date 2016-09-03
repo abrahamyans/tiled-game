@@ -4,4 +4,7 @@
 
 "use strict";
 
-module.exports = require('./main/socket');
+module.exports = {
+    roomManager: require('./main/room-manager'),
+    socket: require('./main/socket')
+};
