@@ -21,12 +21,16 @@ class RoomManager{
         if (!strategies[params.strategy]){
             throw new Error( "Strategy " + params.strategy + " does not exist")
         }
+        if (!params.rows || !params.cols){
+            throw new Error("Please specify rows and cols arguments");
+        }
         this._rooms[id] = new Room({
             rows: params.rows,
             cols: params.cols,
-            world: strategies[params.strategy]
+            world: strategies[params.strategy],
+            id: id
         });
-        return id;
+        return this._rooms[id];
     }
     
     getRoom(roomId){

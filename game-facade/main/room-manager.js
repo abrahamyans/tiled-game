@@ -19,8 +19,8 @@ class RoomManager{
 
     setupDevRoom(){
         this.addRoom({
-            rows: 10,
-            cols: 20,
+            rows: 5,
+            cols: 7,
             strategy: "simple",
             alias: "test"
         })
@@ -28,13 +28,16 @@ class RoomManager{
 
 
 
-    addRoom(room){
-        if (this.roomByAlias[room.alias]){
-            throw new Error("Room with alias "+room.alias+" already exists");
+    addRoom(params){
+        if (this.roomByAlias[params.alias]){
+            throw new Error("Room with alias "+params.alias+" already exists");
         }
-        var roomId = this.manager.addRoom(room);
-        this.roomByAlias[room.alias] = this.manager.getRoom(roomId);
-        room.id = roomId;
+        if (!params.alias){
+            throw new Error("Alias name is not specified");
+        }
+        var room = this.manager.addRoom(params);
+        this.roomByAlias[params.alias] = room;
+        room.alias = params.alias;
         logger.info("Room with id=%s and alias=%s was created", room.id, room.alias);
         return room;
     }
