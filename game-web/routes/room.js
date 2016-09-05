@@ -55,4 +55,13 @@ route.get('/test', (req, res) => {
     res.render('socket-integration-test-page');
 });
 
+
+route.get('/test/reset', (req, res) => {
+    logger.info("Resetting socket integration test")
+    roomManager.removeRoom('test');
+    roomManager.setupTestRoom();
+    res.status(200).send();
+
+})
+
 module.exports = route;

@@ -1,0 +1,66 @@
+body {
+  white-space: pre;
+  font-family: consolas;
+  color: white;
+  background: black;
+}
+
+.property {
+  color: orange;
+  font-weight: bold;
+}
+
+.type-null {
+  color: gray;
+}
+
+.type-boolean {
+  color: orangered;
+}
+
+.type-number {
+  color: lightblue;
+}
+
+.type-string {
+  color: lightgreen;
+}
+
+a {
+  color: dodgerBlue;
+}
+
+.callback-function {
+  color: gray;
+}
+
+.collapser:after {
+  content: "-";
+}
+
+.collapsed > .collapser:after {
+  content: "+";
+}
+
+.ellipsis:after {
+  content: " … ";
+}
+
+.collapsible {
+  margin-left: 2em;
+}
+
+.hoverable {
+  padding: 1px 2px 1px 2px;
+  border-radius: 3px;
+}
+
+.hovered {
+  background-color: rgba(255, 255, 255, .3);
+
+}
+
+.collapser {
+  padding-right: 6px;
+  padding-left: 6px;
+}

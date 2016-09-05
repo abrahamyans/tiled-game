@@ -37,6 +37,10 @@ class RoomManager{
         return this._rooms[roomId];
     }
 
+    removeRoom(roomId){
+        delete this._rooms[roomId]
+    }
+
 }
 
 

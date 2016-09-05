@@ -14,10 +14,10 @@ class RoomManager{
     constructor() {
         this.manager = new require('../../game-rooms').roomManager;
         this.roomByAlias = {};
-        this.setupDevRoom();
+        this.setupTestRoom();
     }
 
-    setupDevRoom(){
+    setupTestRoom(){
         this.addRoom({
             rows: 5,
             cols: 7,
@@ -42,7 +42,11 @@ class RoomManager{
         return room;
     }
 
-
+    removeRoom(alias) {
+        var room = this.getRoomByAlias(alias);
+        this.manager.removeRoom(room.id);
+        delete this.roomByAlias[alias];
+    }
     getRoom(roomId){
         this.manager.getRoom(roomId);
     }
