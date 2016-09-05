@@ -14,7 +14,16 @@ socket.on('connect', function () {
 });
 
 
-socket.on("hello-response", function (data) {
+socket.on("added", function (data) {
     console.log(data);
 });
 
+socket.on('err', function(data){
+    console.log(data);
+});
+
+
+socket.emit('add', {
+    roomAlias: "test",
+    name: Math.random().toString(36).substring(7)
+});

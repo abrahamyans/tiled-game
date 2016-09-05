@@ -125,6 +125,11 @@ class AbstractWorld {
     }
 
     //Public interface methods
+
+    getWorldState(){
+        return JSON.parse(JSON.stringify(this._grid));
+    }
+
     getPlayerIdAt(pos) {
         return this._getCellReference(pos).playerId;
     }

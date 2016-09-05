@@ -51,6 +51,7 @@ route.put('/', (req, res) => {
 
 
 route.get('/test', (req, res) => {
+    logger.info('Requested socket integration test page');
     res.render('socket-integration-test-page');
 });
 
