@@ -15,11 +15,12 @@ socket.on('connect', function () {
 
 
 socket.on("added", function (data) {
-    console.log(data);
+    data.roomState = "Replaced by string";
+    $("#json").JSONView(data);
 });
 
 socket.on('err', function(data){
-    console.log(data);
+    window.alert(JSON.stringify(data));
 });
 
 
