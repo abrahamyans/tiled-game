@@ -1,8 +1,45 @@
+//Libs
+link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
 script(src="https://code.jquery.com/jquery-3.1.0.js")
-
 link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.css", rel="stylesheet")
 script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.js")
 script(src="https://cdn.socket.io/socket.io-1.4.5.js")
+
+//Own
+link(href="/css/test-client-style.css" rel="stylesheet")
 script(src="/js/socket-integration-test-client.js")
-div Debug page
-div(id="json")
+
+.container
+	h2 Socket debugging utility
+	.row
+		.col-sm-4.background1
+			h4 Initial On 'added'
+			input(type = "button" value = "Connect!" id="connect-button")
+			div(id="json-initial-added").json-font
+		.col-sm-4
+			.row.background3.divide-height
+				h4 On 'error'
+				div(id="json-error").json-font
+			.row.background2.divide-height
+				h4 Emit 'turn'
+				br
+				|Row:
+				br
+				input(type = "number" id="emit-row")
+				br
+				|Col:
+				br
+				input(type = "number" id="emit-col")
+				br
+				br
+				input(type = "button" value = "Turn" id="turn-submit-button")
+				div(id="json-emit-turn").json-font
+		.col-sm-4
+			.row.background2.divide-height
+				h4 On 'added'
+				div(id="json-added").json-font
+			.row.background1.divide-height
+				h4 On 'turned'
+				div(id="json-turned").json-font
+
+

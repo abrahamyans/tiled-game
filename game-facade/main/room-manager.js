@@ -47,8 +47,9 @@ class RoomManager{
         this.manager.removeRoom(room.id);
         delete this.roomByAlias[alias];
     }
+
     getRoom(roomId){
-        this.manager.getRoom(roomId);
+        return this.manager.getRoom(roomId);
     }
 
     getRoomByAlias(alias){

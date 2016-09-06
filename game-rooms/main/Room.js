@@ -41,22 +41,23 @@ class Room{
             color: randomColor({
                 luminosity: 'bright',
                 format: 'hex'
-            })
+            }),
+            initialPositions: addPlayerResponse.positions
         };
         this.players[id] = player;
 
         return player;
     }
 
-    onTurn(pos, playerPublicId) {
-        var player = this.players[playerPublicId];
+    onTurn(pos, playerPrivateId) {
+        var player = this.players[playerPrivateId];
 
         if (!player) {
-            throw new Error(errors.WRONG_ID + playerPublicId)
+            throw new Error("Cannot find player with private id " + playerPrivateId)
         }
 
         if (this._world.getPlayerIdAt(pos) !== player.publicId) {
-            throw new Error(errors.NOT_AUTHORIZED_CLICK);
+            throw new Error("The cell at " + pos.row + ", " + pos.col + " does not belong to player with public id " + player.publicId);
         }
 
         return this._world.onTurn(pos);
