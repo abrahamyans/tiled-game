@@ -1,0 +1,41 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+*{
+    overflow-y:scroll;
+}
+
+.json-font{
+    font-size: 11px;
+}
+
+.background1{
+    background-color: antiquewhite;
+    padding: 5px;
+}
+
+.background2{
+    background-color: aliceblue;
+    padding: 5px
+}
+
+.background3{
+    background-color: coral;
+    padding: 5px
+}
+
+.row {
+    overflow: hidden;
+}
+
+.divide-height{
+    height: 50%;
+}
+
+[class*="col-"]{
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}

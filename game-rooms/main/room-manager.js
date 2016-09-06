@@ -34,6 +34,9 @@ class RoomManager{
     }
     
     getRoom(roomId){
+        if (!this._rooms[roomId]){
+            throw new Error("Can't find room with roomId " + roomId);
+        }
         return this._rooms[roomId];
     }
 

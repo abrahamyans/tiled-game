@@ -118,9 +118,7 @@ class AbstractWorld {
 
     _getCellReference(pos){
         if (!this._isWithinBounds(pos))
-            throw new Error({
-                message: errors.POSITION_OUT_OF_BOUNDS
-            });
+            throw new Error("The size is " + JSON.stringify(this._size) + " request position is " + JSON.stringify(pos));
         return this._grid[pos.row][pos.col];
     }
 
