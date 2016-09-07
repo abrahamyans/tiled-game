@@ -54,11 +54,9 @@ class Room{
         if (!player) {
             throw new Error("Cannot find player with private id " + playerPrivateId)
         }
-
         if (this._world.getPlayerIdAt(pos) !== player.publicId) {
             throw new Error("The cell at " + pos.row + ", " + pos.col + " does not belong to player with public id " + player.publicId);
         }
-
         return this._world.onTurn(pos);
     }
 

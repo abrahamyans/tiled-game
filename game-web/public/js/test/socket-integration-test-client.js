@@ -27,6 +27,7 @@ var socketEventHandlers = {
                 rows: addedResponse.roomState.length,
                 cols: addedResponse.roomState[0].length
             };
+            roomState.grid = addedResponse.grid;
             roomState.playerPublicId = addedResponse.player.publicId;
             roomState.playerPrivateId = addedResponse.player.privateId;
             console.log("wqerqwer");
