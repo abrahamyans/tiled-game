@@ -7,38 +7,36 @@ var chai = require('chai');
 var roomManager = require('../main/room-manager');
 describe('Room manager test', () => {
 
-
-    var roomId;
     var room;
-    var playerAddResponse;
     var player;
     it('Add room', () => {
-        roomId = roomManager.addRoom({
+        room = roomManager.addRoom({
             rows: 10, 
             cols: 20,
-            strategy: "simple"
+            strategy: "simple",
+            alias: "alias"
         });
-        chai.assert.isNotNull(roomId);
+        chai.assert.isNotNull(room);
     });
 
-    it('Get added room', () => {
-        room = roomManager.getRoom(roomId);
-        chai.assert.isNotNull(room);
+    it("Should return same room", () => {
+        chai.assert.equal(roomManager.getRoom(room.id), roomManager.getRoomByAlias('alias'));
     });
 
 
     it('Add player to room', () => {
-        player = {name: "Hello"};
-        playerAddResponse = room.addPlayer(player);
-        chai.assert.isDefined(player.publicId);
-        chai.assert.isNotNull(player.publicId);
-        chai.assert.isNumber(playerAddResponse.playerId);
-        chai.assert.isArray(playerAddResponse.positions);
+        var params = {name: "Hello"};
+        player = room.addPlayer(params);
+        chai.assert.isNumber(player.privateId);
+        chai.assert.isNumber(player.publicId);
+        chai.assert.isArray(player.initialPositions);
+        chai.assert.isString(player.name);
+        chai.assert.isString(player.color);
     });
 
 
     it('Perform turn', () => {
-        var turnResponse = room.onTurn(playerAddResponse.positions[0], player.publicId);
+        var turnResponse = room.onTurn(player.initialPositions[0], player.privateId);
         chai.assert.isArray(turnResponse.chown);
         chai.assert.isObject(turnResponse.rotate);
     })

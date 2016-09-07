@@ -6,6 +6,7 @@
 var Room = require('./Room');
 var SimpleStrategyWorld = require('../../game-core').SimpleStrategyWorld;
 var idGenerator = require('./id-generator');
+var logger = require('log4js').getLogger(__filename);
 var strategies ={
     "simple": SimpleStrategyWorld
 };
@@ -14,9 +15,26 @@ class RoomManager{
     
     constructor(){
         this._rooms = {};
+        this._roomByAlias = {};
+        this.setupTestRoom();
+    }
+
+    setupTestRoom(){
+        this.addRoom({
+            rows: 5,
+            cols: 7,
+            strategy: "simple",
+            alias: "test"
+        })
     }
     
     addRoom(params){
+        if (!params.alias){
+            throw new Error("Alias name is not specified");
+        }
+        if (this._roomByAlias[params.alias]){
+            throw new Error("Room with alias "+params.alias+" already exists");
+        }
         var id = idGenerator({min: 0, max: 2048}, this._rooms);
         if (!strategies[params.strategy]){
             throw new Error( "Strategy " + params.strategy + " does not exist")
@@ -24,13 +42,18 @@ class RoomManager{
         if (!params.rows || !params.cols){
             throw new Error("Please specify rows and cols arguments");
         }
-        this._rooms[id] = new Room({
+        var room = new Room({
             rows: params.rows,
             cols: params.cols,
             world: strategies[params.strategy],
-            id: id
         });
-        return this._rooms[id];
+        room.id = id;
+        room.alias = params.alias;
+        this._rooms[id] = room;
+        this._roomByAlias[params.alias] = room;
+        logger.info("Room with id=%s and alias=%s was created", room.id, room.alias);
+
+        return room;
     }
     
     getRoom(roomId){
@@ -42,6 +65,12 @@ class RoomManager{
 
     removeRoom(roomId){
         delete this._rooms[roomId]
+    }
+
+    getRoomByAlias(alias){
+        if(!this._roomByAlias[alias])
+            throw new Error("No room with alias name " + alias);
+        return this._roomByAlias[alias];
     }
 
 }

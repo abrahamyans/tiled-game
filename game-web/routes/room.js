@@ -5,7 +5,7 @@
 "use strict";
 var express = require('express');
 var route = express.Router();
-var roomManager = require('../../game-facade').roomManager;
+var roomManager = require('../../game-rooms').roomManager;
 var logger = require('log4js').getLogger(module.filename);
 var util = require('util');
 logger.info('Mounting router for /room');
@@ -62,6 +62,6 @@ route.get('/test/reset', (req, res) => {
     roomManager.setupTestRoom();
     res.status(200).send();
 
-})
+});
 
 module.exports = route;

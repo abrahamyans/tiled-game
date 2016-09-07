@@ -5,7 +5,7 @@
 "use strict";
 
 var logger = require('log4js').getLogger(__filename);
-var roomManager = require('./room-manager');
+var roomManager = require('../../game-rooms').roomManager;
 
 
 module.exports = function (server) {
@@ -25,11 +25,6 @@ module.exports = function (server) {
 
             try {
                 var room = roomManager.getRoomByAlias(params.roomAlias);
-            } catch (err) {
-                return socket.emit('err', {status: "ROOM_NOT_FOUND", message: err.message});
-            }
-
-            try {
                 var player = room.addPlayer(params);
             } catch (err) {
                 return socket.emit('err', {status: "PLAYER_NOT_ADDED", message: err.message})
@@ -53,14 +48,13 @@ module.exports = function (server) {
                 roomId: room.id,
                 roomAlias: room.alias
             });
-            //Notify all other players
+            //Notify all other players in room
             socket.broadcast.to(room.id).emit('added', {
                 publicId: player.publicId,
                 color: player.color,
                 name: player.name,
                 initialPositions: player.initialPositions
             });
-
 
             logger.info("Player name=%s joined room with id=%s alias=%s", params.name, room.id, params.roomAlias);
 
@@ -80,10 +74,8 @@ module.exports = function (server) {
                 var turnResult = room.onTurn(turnPos, socket.playerPrivateId);
                 io.in(room.id).emit('turned', turnResult);
             }catch(err){
-                socket.emit('err', {status: "FAILED_TURN", message: err.message});
+                return socket.emit('err', {status: "FAILED_TURN", message: err.message});
             }
-
-
         });
 
         socket.on('disconnect', function (client) {
