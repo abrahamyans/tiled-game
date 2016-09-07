@@ -8,10 +8,15 @@ var socket;
 var roomState = null;
 
 
+function changePageTitle(title){
+    document.title = title;
+}
+
 var socketEventHandlers = {
     err: function (err) {
         err.timestamp = new Date().toString();
         $("#json-error").JSONView(err);
+        changePageTitle("error: " + err.message);
     },
 
     added: function (addedResponse) {
@@ -30,11 +35,13 @@ var socketEventHandlers = {
         }
         else {
             $("#json-added").JSONView(addedResponse);
+            changePageTitle("Player " + addedResponse.name + " added");
         }
     },
 
     turned: function(turnResult){
         $("#json-turned").JSONView(turnResult);
+        changePageTitle("Turned " + JSON.stringify(turnResult.rotate));
     }
 };
 

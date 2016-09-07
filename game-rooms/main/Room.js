@@ -22,7 +22,6 @@ class Room{
             rows: params.rows,
             cols: params.cols
         });
-        this.id = params.id;
         this.players = {};
     }
 
