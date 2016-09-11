@@ -4,22 +4,44 @@
 
 "use strict";
 
-var socket;
-var roomState = null;
 
 
-function changePageTitle(title){
-    document.title = title;
-}
+define(['event-emitter', 'jquery'], function(eventEmitter, $){
 
-var socketEventHandlers = {
-    err: function (err) {
+    var roomState = null;
+
+    function changePageTitle(title){
+        document.title = title;
+    }
+
+
+    //Submit button listener
+    $("#turn-submit-button").click(function () {
+        var request = {
+            row: parseInt($("#emit-row").val()),
+            col: parseInt($("#emit-col").val())
+        };
+        $("#json-emit-turn").JSONView(request);
+        eventEmitter.emit('turn', request);
+    });
+
+    //Connect button listener
+    $("#connect-button").click(function () {
+        eventEmitter.emit('add',  {
+            roomAlias: "test",
+            name: Math.random().toString(36).substring(7)
+        });
+    });
+
+
+    eventEmitter.subscribe('err', function (err) {
         err.timestamp = new Date().toString();
         $("#json-error").JSONView(err);
         changePageTitle("error: " + err.message);
-    },
+    });
 
-    added: function (addedResponse) {
+
+    eventEmitter.subscribe('added', function (addedResponse) {
         if (!roomState) {
             roomState = {};
             roomState.roomId = addedResponse.roomId;
@@ -38,51 +60,13 @@ var socketEventHandlers = {
             $("#json-added").JSONView(addedResponse);
             changePageTitle("Player " + addedResponse.name + " added");
         }
-    },
+    });
 
-    turned: function(turnResult){
+
+    eventEmitter.subscribe('turned', function(turnResult){
         $("#json-turned").JSONView(turnResult);
         changePageTitle("Turned " + JSON.stringify(turnResult.rotate));
-    }
-};
-
-
-//register ui events
-$(function () {
-
-    //Connect button listener
-    $("#connect-button").click(function () {
-        socket = io();
-
-        socket.on("turned", function (data) {
-            socketEventHandlers["turned"](data);
-        });
-
-        socket.on("added", function (data) {
-            socketEventHandlers["added"](data);
-        });
-
-        socket.on('err', function (data) {
-            socketEventHandlers["err"](data);
-        });
-
-        socket.emit('add', {
-            roomAlias: "test",
-            name: Math.random().toString(36).substring(7)
-        });
     });
-
-    //Submit button listener
-    $("#turn-submit-button").click(function () {
-        var request = {
-            row: parseInt($("#emit-row").val()),
-            col: parseInt($("#emit-col").val())
-        };
-        $("#json-emit-turn").JSONView(request);
-        if (socket)
-            socket.emit('turn', request);
-    });
-
 
 });
 
