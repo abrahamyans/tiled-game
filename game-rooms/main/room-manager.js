@@ -21,8 +21,8 @@ class RoomManager{
 
     setupTestRoom(){
         this.addRoom({
-            rows: 5,
-            cols: 7,
+            rows: 10,
+            cols: 20,
             strategy: "simple",
             alias: "test"
         })
