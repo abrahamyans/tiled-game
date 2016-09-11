@@ -50,18 +50,6 @@ route.put('/', (req, res) => {
 });
 
 
-route.get('/test', (req, res) => {
-    logger.info('Requested socket integration test page');
-    res.render('socket-test-page');
-});
-
-route.get('/test/reset', (req, res) => {
-    logger.info("Resetting socket integration test");
-    roomManager.removeRoomByAlias('test');
-    roomManager.setupTestRoom();
-    res.status(200).send();
-
-});
 
 
 route.get('/*', (req, res) => {

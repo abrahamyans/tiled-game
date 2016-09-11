@@ -31,6 +31,32 @@ app.use(validator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Test routes
+if (app.get('env') === 'development'){
+    var roomManager = require('../game-rooms').roomManager;
+    //Socket test routes
+    app.get('/room/test', (req, res) => {
+        logger.info('Requested socket integration test page');
+        res.render('socket-test-page');
+    });
+
+    app.get('/room/test/reset', (req, res) => {
+        logger.info("Resetting socket integration test");
+        roomManager.removeRoomByAlias('test');
+        roomManager.setupTestRoom();
+        res.status(200).send();
+
+    });
+
+    //Game UI test routes
+    app.get('/ui-test', (req, res) => {
+        logger.info("Requested ui test page");
+        res.render('ui-test-page')
+    })
+
+}
+
+
 app.use('/room', require('./routes/room'));
 
 // catch 404 and forward to error handler
@@ -57,7 +83,7 @@ function getStatus(status){
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        if (res.status >= 500)
+        if (res.statusCode >= 500)
             logger.error(err.message);
         res.json({
             message: err.message,
