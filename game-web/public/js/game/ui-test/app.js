@@ -9,7 +9,8 @@ requirejs.config({
     "paths": {
 
         "jquery": "https://code.jquery.com/jquery-3.1.0",
-        "easel": "https://code.createjs.com/createjs-2015.11.26.min",
+        "create": "https://code.createjs.com/createjs-2015.11.26.min",
+        "page-controller": "../page-controller",
         "game-controller": "../game-controller",
         "socket-client": "mock-socket-client",
         "event-emitter": "../event-emitter",
@@ -17,12 +18,13 @@ requirejs.config({
     },
     "shim": {
         "socket-client": ["event-emitter"],
-        "game-controller": ["event-emitter", "easel", "jquery"]
+        "page-controller": ["event-emitter", "jquery"],
+        "game-controller": ["event-emitter", "create"]
     }
 });
 
 require([
     'socket-client',
     'game-controller',
-    'game-controller'
+    'page-controller'
 ]);
