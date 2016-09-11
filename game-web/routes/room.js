@@ -56,7 +56,7 @@ route.get('/test', (req, res) => {
 });
 
 route.get('/test/reset', (req, res) => {
-    logger.info("Resetting socket integration test")
+    logger.info("Resetting socket integration test");
     roomManager.removeRoomByAlias('test');
     roomManager.setupTestRoom();
     res.status(200).send();
