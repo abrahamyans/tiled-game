@@ -63,8 +63,10 @@ class RoomManager{
         return this._rooms[roomId];
     }
 
-    removeRoom(roomId){
-        delete this._rooms[roomId]
+    removeRoomByAlias(roomAlias){
+        var roomId = this._roomByAlias[roomAlias].id;
+        delete this._rooms[roomId];
+        delete this._roomByAlias[roomAlias];
     }
 
     getRoomByAlias(alias){

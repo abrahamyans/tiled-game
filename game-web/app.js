@@ -57,7 +57,8 @@ function getStatus(status){
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        logger.error(err.message);
+        if (res.status >= 500)
+            logger.error(err.message);
         res.json({
             message: err.message,
             status: getStatus(res.statusCode)

@@ -1,13 +1,9 @@
-//Libs
+
 link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-script(src="https://code.jquery.com/jquery-3.1.0.js")
-link(href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.css", rel="stylesheet")
-script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.js")
-script(src="https://cdn.socket.io/socket.io-1.4.5.js")
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css")
 
 //Own
 link(href="/css/test-client-style.css" rel="stylesheet")
-script(src="/js/test/socket-integration-test-client.js")
 
 .container
 	h2 Socket debugging utility
@@ -43,3 +39,4 @@ script(src="/js/test/socket-integration-test-client.js")
 				div(id="json-turned").json-font
 
 
+script(src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.1/require.min.js" data-main="/js/game/socket-test/app.js")
