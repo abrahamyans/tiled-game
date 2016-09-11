@@ -893,7 +893,7 @@ define(['event-emitter'], function (eventEmitter) {
             {
                 "publicId": 7,
                 "color": "#ce02ba",
-                "name": "7y0kmn1ja2ca8suac3di"
+                "name": "7y0kmn1"
             }
         ],
         "roomId": 623,
@@ -901,9 +901,12 @@ define(['event-emitter'], function (eventEmitter) {
     };
 
     eventEmitter.subscribe('add', function () {
+
         setTimeout(function () {
             eventEmitter.emit('added', addResponse);
         }, 1000);
+
+
     });
 
     return {
