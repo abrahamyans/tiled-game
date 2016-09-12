@@ -27,5 +27,5 @@ requirejs.config({
 require([
     'socket-client',
     'page-controller',
-    'game-controller',
+    'game-renderer',
 ]);
