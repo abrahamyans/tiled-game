@@ -903,7 +903,8 @@ define(['event-emitter'], function (eventEmitter) {
     eventEmitter.subscribe('add', function () {
 
         setTimeout(function () {
-            eventEmitter.emit('added', addResponse);
+            eventEmitter.emit('added', addResponse, true);
+            eventEmitter.emit('render-init', addResponse, true);
         }, 2000);
     });
 

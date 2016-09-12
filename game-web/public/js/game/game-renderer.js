@@ -3,3 +3,17 @@
  */
 
 "use strict";
+
+define(['event-emitter', 'create'], function (eventEmitter, create) {
+
+
+
+
+
+
+
+
+    eventEmitter.subscribe('render-turn');
+    eventEmitter.subscribe('render-add');
+    eventEmitter.subscribe('render-init');
+});
