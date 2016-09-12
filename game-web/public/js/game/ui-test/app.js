@@ -12,7 +12,7 @@ requirejs.config({
         "create": "https://code.createjs.com/createjs-2015.11.26.min",
 
         "page-controller": "../page-controller",
-        "game-controller": "../game-controller",
+        "game-renderer": "../game-renderer",
         "socket-client": "mock-socket-client",
         "event-emitter": "../event-emitter",
 
@@ -20,7 +20,7 @@ requirejs.config({
     "shim": {
         "socket-client": ["event-emitter"],
         "page-controller": ["event-emitter", "jquery"],
-        "game-controller": ["event-emitter", "create"]
+        "game-renderer": ["event-emitter", "create"]
     }
 });
 
