@@ -10,6 +10,7 @@ requirejs.config({
 
         "jquery": "https://code.jquery.com/jquery-3.1.0",
         "create": "https://code.createjs.com/createjs-2015.11.26.min",
+
         "page-controller": "../page-controller",
         "game-controller": "../game-controller",
         "socket-client": "mock-socket-client",
@@ -25,6 +26,6 @@ requirejs.config({
 
 require([
     'socket-client',
+    'page-controller',
     'game-controller',
-    'page-controller'
 ]);

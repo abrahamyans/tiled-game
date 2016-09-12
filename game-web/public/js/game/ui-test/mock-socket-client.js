@@ -904,9 +904,7 @@ define(['event-emitter'], function (eventEmitter) {
 
         setTimeout(function () {
             eventEmitter.emit('added', addResponse);
-        }, 1000);
-
-
+        }, 2000);
     });
 
     return {
