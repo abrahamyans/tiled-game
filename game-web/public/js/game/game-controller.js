@@ -57,6 +57,15 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
             color: addedPlayerResponse.player.color,
             name: addedPlayerResponse.player.name
         };
+
+        eventEmitter.emit('render-init', grid.map(function (row) {
+            return row.map(function(cell){
+                return {
+                    shapeId: cell.shapeId,
+                    color: players.filter(function(pl){return pl.publicId == cell.playerId})[0].color
+                }
+            })
+        }))
     };
 
     var addPlayer = function(player){
