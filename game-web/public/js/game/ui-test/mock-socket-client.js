@@ -904,7 +904,17 @@ define(['event-emitter'], function (eventEmitter) {
 
         setTimeout(function () {
             eventEmitter.emit('added', addResponse, true);
-            eventEmitter.emit('render-init', addResponse, true);
+            eventEmitter.emit('render-init', addResponse.roomState.map(function (row) {
+                return row.map(function (cell) {
+                    var player = addResponse.players.filter(function (pl) {
+                        return pl.publicId == cell.playerId
+                    });
+                    return {
+                        shapeId: cell.shapeId,
+                        color: (Array.isArray(player) && player.length > 0) ? player[0].color : null
+                    }
+                })
+            }), true);
         }, 2000);
     });
 
