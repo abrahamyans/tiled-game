@@ -9,19 +9,19 @@ requirejs.config({
     "paths": {
 
         "jquery": "https://code.jquery.com/jquery-3.1.0",
-        "create": "https://code.createjs.com/createjs-2015.11.26.min",
-
         "page-controller": "../page-controller",
         "ui-config": "../ui-config",
         "game-renderer": "../game-renderer",
         "socket-client": "mock-socket-client",
         "event-emitter": "../event-emitter",
+        "Cell": "../Cell"
 
     },
     "shim": {
         "socket-client": ["event-emitter"],
         "page-controller": ["event-emitter", "jquery"],
-        "game-renderer": ["event-emitter", "create", "ui-config", "jquery"]
+        "game-renderer": ["event-emitter", "ui-config", "jquery"],
+        "Cell": ['event-emitter']
     }
 });
 
