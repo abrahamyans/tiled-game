@@ -60,9 +60,12 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
 
         eventEmitter.emit('render-init', grid.map(function (row) {
             return row.map(function(cell){
+                var player = players.filter(function (pl) {
+                    return pl.publicId == cell.playerId
+                });
                 return {
                     shapeId: cell.shapeId,
-                    color: players.filter(function(pl){return pl.publicId == cell.playerId})[0].color
+                    color: (Array.isArray(player) && player.length > 0) ? player[0].color : null
                 }
             })
         }))
