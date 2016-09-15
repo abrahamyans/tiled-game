@@ -8,8 +8,8 @@
 define(function () {
     return {
         cellGap: 2,
-        emptyColor: "#333",
+        emptyColor: "#414141",
         shapeWidthRatio: 0.25,
-        cellBackgroundColor: "#111"
+        cellBackgroundColor: "#333"
     }
 });

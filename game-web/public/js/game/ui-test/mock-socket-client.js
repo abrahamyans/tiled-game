@@ -915,7 +915,20 @@ define(['event-emitter'], function (eventEmitter) {
                     }
                 })
             }), true);
-        }, 2000);
+        }, 500);
+    });
+
+
+    eventEmitter.subscribe('click', function (pos) {
+         eventEmitter.emit('render-turn', {
+             rotate: {row: 5, col: 7, angle: +90},
+             changeColor: [
+                 {row: 4, col: 7, color: "#9e02ff"},
+                 {row: 3, col: 7, color: "#9e02ff"},
+                 {row: 3, col: 6, color: "#9e02ff"},
+                 {row: 4, col: 6, color: "#9e02ff"}
+             ]
+         });
     });
 
     return {

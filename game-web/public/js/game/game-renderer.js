@@ -5,14 +5,6 @@
 "use strict";
 
 define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter, config, $, Cell) {
-    /**
-     * Matrix of objects
-     * {
-     *      shapeId: int,
-     *      color: int
-     * }
-     */
-    var world;
 
     var stage;
 
@@ -54,12 +46,14 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
         };
 
         createjs.Stage.prototype.getCellAt = function(pos){
-            if(!this[pos.row + ":" + pos.col])
+            if(!this.cells[pos.row + ":" + pos.col])
                 throw new Error("Position out of bounds " + JSON.stringify(pos));
             return this.cells[pos.row + ":" + pos.col];
         };
 
         stage = new createjs.Stage("canvas");
+        stage.enableMouseOver();
+
         world.forEach(function (row, r) {
             row.forEach(function(cell, c){
                  var cellActor = new Cell({
@@ -70,17 +64,27 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
                     shapeWidth: dimens.shapeWidth,
                     size: dimens.cellSize
                 });
-                cellActor.x = (c+1) * config.cellGap + c * dimens.cellSize;
-                cellActor.y = (r+1) * config.cellGap + r * dimens.cellSize;
-                stage.addChild(cell);
+                cellActor.x = (c+1) * config.cellGap + c * dimens.cellSize + dimens.cellSize/2;
+                cellActor.y = (r+1) * config.cellGap + r * dimens.cellSize + dimens.cellSize/2;
+                stage.addCell(cellActor);
             });
         });
 
+        createjs.Ticker.on("tick", stage);
+
+
     };
 
+    var turn = function(turn){
+        turn.changeColor.forEach(function(pos){
+            var cell = stage.getCellAt(pos);
+            cell.changeColor(pos.color);
+        });
+        stage.getCellAt(turn.rotate).rotation += turn.rotate.angle;
+        stage.update();
+    };
 
-
-    // eventEmitter.subscribe('render-turn');
+    eventEmitter.subscribe('render-turn', turn);
     // eventEmitter.subscribe('render-add');
     eventEmitter.subscribe('render-init', init);
 });
