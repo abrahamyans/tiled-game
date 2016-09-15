@@ -21,12 +21,12 @@ requirejs.config({
         "socket-client": ["event-emitter"],
         "page-controller": ["event-emitter", "jquery"],
         "game-renderer": ["event-emitter", "ui-config", "jquery"],
-        "Cell": ['event-emitter']
+        "Cell": ["event-emitter", "ui-config"]
     }
 });
 
 require([
-    'game-renderer',
-    'socket-client',
-    'page-controller',
+    "game-renderer",
+    "socket-client",
+    "page-controller",
 ]);
