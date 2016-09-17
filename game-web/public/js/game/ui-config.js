@@ -10,6 +10,8 @@ define(function () {
         cellGap: 2,
         emptyColor: "#414141",
         shapeWidthRatio: 0.25,
-        cellBackgroundColor: "#333"
+        cellBackgroundColor: "#333",
+        myRotateAnimationDuration: 130,
+        rotateAnimationDuration: 80
     }
 });

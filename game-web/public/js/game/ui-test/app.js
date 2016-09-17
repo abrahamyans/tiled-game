@@ -26,7 +26,10 @@ requirejs.config({
 });
 
 require([
+    "event-emitter",
     "game-renderer",
     "socket-client",
     "page-controller",
-]);
+], function (eventEmitter) {
+    eventEmitter.emit('add', null, true);
+});

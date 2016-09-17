@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 if (app.get('env') === 'development'){
     var roomManager = require('../game-rooms').roomManager;
     //Socket test routes
-    app.get('/room/test', (req, res) => {
+    app.get('/room-test', (req, res) => {
         logger.info('Requested socket integration test page');
         res.render('socket-test-page');
     });
@@ -51,7 +51,7 @@ if (app.get('env') === 'development'){
     //Game UI test routes
     app.get('/ui-test', (req, res) => {
         logger.info("Requested ui test page");
-        res.render('ui-test-page')
+        res.render('game-ui-test');
     })
 
 }
