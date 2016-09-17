@@ -56,7 +56,7 @@ if (app.get('env') === 'development'){
 
 }
 
-
+app.get('/', (req, res) => res.render('room-registration'));
 app.use('/room', require('./routes/room'));
 
 // catch 404 and forward to error handler
