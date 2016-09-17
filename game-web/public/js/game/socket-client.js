@@ -20,7 +20,7 @@ define(['io', 'event-emitter'], function(io, eventEmitter){
             });
 
             socket.on('err', function (data) {
-                eventEmitter.emit("err", data);
+                eventEmitter.emit("err", data, true);
             });
 
 
@@ -31,6 +31,11 @@ define(['io', 'event-emitter'], function(io, eventEmitter){
 
             eventEmitter.subscribe("turn", function(data){
                 socket.emit('turn', data);
+            });
+
+            eventEmitter.subscribe("err", function(data){
+                console.log(data);
+                window.alert("Please report this message to Smehsn\n"+JSON.stringify(data, null, 3));
             })
 
         }

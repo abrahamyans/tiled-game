@@ -35,13 +35,11 @@ define(function(){
         },
 
         emit: function(ev, data, required){
-            if (required === true  &&  !events.hasOwnProperty(ev) || events[ev].length == 0)
+            if (required === true  &&  (!events.hasOwnProperty(ev) || events[ev].length == 0))
                 throw new Error("There is no listener for event " + ev);
-
             events[ev].forEach(function(listener){
                listener(data);
             });
-
         }
     }
 

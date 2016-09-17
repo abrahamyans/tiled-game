@@ -52,7 +52,6 @@ define(['event-emitter', 'jquery'], function(eventEmitter, $){
             roomState.grid = addedResponse.grid;
             roomState.playerPublicId = addedResponse.player.publicId;
             roomState.playerPrivateId = addedResponse.player.privateId;
-            console.log("wqerqwer");
             addedResponse.roomState = "rows: " + addedResponse.roomState.length + " cols: " + addedResponse.roomState[0].length;
             $("#json-initial-added").JSONView(addedResponse);
         }

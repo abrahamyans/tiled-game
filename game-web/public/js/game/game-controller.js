@@ -48,7 +48,8 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
                 publicId: pl.publicId,
                 color: pl.color,
                 name: pl.name
-            }
+            };
+            return map;
         }, {});
 
         myPlayer = {

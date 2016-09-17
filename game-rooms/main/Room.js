@@ -26,7 +26,7 @@ class Room{
     }
 
 
-    addPlayer(params) {
+    addPlayer(playerName) {
         try {
             var id = idGenerator({min: conf.publicIdMin, max: conf.publicIdMax}, this.players);
         }catch(err){
@@ -34,7 +34,7 @@ class Room{
         }
         var addPlayerResponse = this._world.addPlayer();
         var player = {
-            name: Room.require(params.name, "No player name is specified"),
+            name: Room.require(playerName, "No player name is specified"),
             publicId: addPlayerResponse.playerId,
             privateId: id,
             color: randomColor({
