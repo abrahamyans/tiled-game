@@ -16,7 +16,7 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
      */
     var grid;
     /**
-     * Holds an array of objects
+     * Holds a publicId -> player mapping of objects
      * {
      *      publicId: int
      *      color: string
@@ -43,13 +43,13 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
             return grid[pos.row][pos.col];
         };
 
-        players = addedPlayerResponse.players.map(function(pl){
-            return {
+        players = addedPlayerResponse.players.reduce(function(map, pl){
+            map[pl.publicId] = {
                 publicId: pl.publicId,
                 color: pl.color,
                 name: pl.name
             }
-        });
+        }, {});
 
         myPlayer = {
             publicId: addedPlayerResponse.player.publicId,
@@ -60,23 +60,20 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
 
         eventEmitter.emit('render-init', grid.map(function (row) {
             return row.map(function(cell){
-                var player = players.filter(function (pl) {
-                    return pl.publicId == cell.playerId
-                });
                 return {
                     shapeId: cell.shapeId,
-                    color: (Array.isArray(player) && player.length > 0) ? player[0].color : null
+                    color: cell.playerId ? players[cell.playerId].color : null
                 }
             })
         }))
     };
 
     var addPlayer = function(player){
-        players.push({
+        players[player.publicId] = {
             publicId: player.publicId,
             color: player.color,
             name: player.name
-        });
+        };
 
         player.initialPositions.forEach(function(pos){
             var cell = grid.cellAt({
@@ -87,6 +84,22 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
             cell.shapeId = pos.shapeId;
         });
 
+        eventEmitter.emit('render-add', {
+            changeColor: player.initialPositions.map(function(pos){
+                return {
+                    row: pos.row,
+                    col: pos.col,
+                    color: player.color
+                }
+            }),
+            changeShape: player.initialPositions.map(function(pos){
+                return {
+                    row: pos.row,
+                    col: pos.col,
+                    shapeId: pos.shapeId
+                }
+            })
+        });
     };
 
     /**
@@ -108,6 +121,21 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         turn.chown.forEach(function(chownPos){
             grid.cellAt(chownPos).playerId = rotatedCell.playerId;
         });
+
+        eventEmitter.emit('render-turn', {
+            dontRotate: rotatedCell.playerId == myPlayer.publicId,
+            rotate: {
+                row: turn.rotate.row,
+                col: turn.rotate.col
+            },
+            changeColor: turn.chown.map(function(pos){
+                return {
+                    row: pos.row,
+                    col: pos.col,
+                    color: players[rotatedCell.playerId].color
+                }
+            })
+        });
     };
 
     //Event handlers
@@ -115,6 +143,7 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         if (grid.cellAt(pos).playerId !== myPlayer.publicId){
             return;
         }
+        eventEmitter.emit('render-my-rotate', pos);
         eventEmitter.emit('turn', {
             row: pos.row,
             col: pos.col

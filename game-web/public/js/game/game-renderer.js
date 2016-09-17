@@ -8,7 +8,7 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
     var stage;
 
-    var init = function(world){
+    var init = function (world) {
         var dimens = {
             rows: world.length,
             cols: world[0].length,
@@ -37,7 +37,7 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
         canvas.css('margin-left', (maxWidth - dimens.width) / 2);
 
         createjs.Stage.prototype.addCell = function (cell) {
-            if (!this.cells){
+            if (!this.cells) {
                 this.cells = {};
             }
             this.cells[cell.row + ":" + cell.col] = cell;
@@ -45,8 +45,8 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
         };
 
-        createjs.Stage.prototype.getCellAt = function(pos){
-            if(!this.cells[pos.row + ":" + pos.col])
+        createjs.Stage.prototype.getCellAt = function (pos) {
+            if (!this.cells[pos.row + ":" + pos.col])
                 throw new Error("Position out of bounds " + JSON.stringify(pos));
             return this.cells[pos.row + ":" + pos.col];
         };
@@ -55,17 +55,19 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
         stage.enableMouseOver();
 
         world.forEach(function (row, r) {
-            row.forEach(function(cell, c){
-                 var cellActor = new Cell({
+            row.forEach(function (cell, c) {
+                var cellActor = new Cell({
                     row: r,
                     col: c,
-                    color: cell.color? cell.color : config.emptyColor,
-                    shapeId: cell.shapeId,
+                    color: cell.color ? cell.color : config.emptyColor,
+                    shapeType: cell.shapeId <= 3 ? "BENT" : "STRAIGHT",
+                    rotation: cell.shapeId <= 3 ? 90 * cell.shapeId: 90 * (cell.shapeId - 4),
                     shapeWidth: dimens.shapeWidth,
                     size: dimens.cellSize
                 });
-                cellActor.x = (c+1) * config.cellGap + c * dimens.cellSize + dimens.cellSize/2;
-                cellActor.y = (r+1) * config.cellGap + r * dimens.cellSize + dimens.cellSize/2;
+                cellActor.x = (c + 1) * config.cellGap + c * dimens.cellSize + dimens.cellSize / 2;
+                cellActor.y = (r + 1) * config.cellGap + r * dimens.cellSize + dimens.cellSize / 2;
+                cellActor.regX = cellActor.regY = dimens.cellSize / 2;
                 stage.addCell(cellActor);
             });
         });
@@ -75,16 +77,41 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
     };
 
-    var turn = function(turn){
-        turn.changeColor.forEach(function(pos){
-            var cell = stage.getCellAt(pos);
-            cell.changeColor(pos.color);
-        });
-        stage.getCellAt(turn.rotate).rotation += turn.rotate.angle;
-        stage.update();
+
+    var turn = function (turn) {
+        if (turn.dontRotate === true){
+            turn.changeColor.forEach(function (pos) {
+                stage.getCellAt(pos).changeColor(pos.color);
+            });
+
+        }else {
+            stage.getCellAt(turn.rotate).rotate(false, function(){
+                turn.changeColor.forEach(function (pos) {
+                    stage.getCellAt(pos).changeColor(pos.color);
+                });
+            });
+        }
     };
 
+
+    var myRotate = function(pos){
+        stage.getCellAt(pos).rotate(true);
+    };
+
+    var add = function(add) {
+        add.changeColor.forEach(function(pos){
+            stage.getCellAt(pos).changeColor(pos.color);
+        });
+        add.changeShape.forEach(function(pos){
+            stage.getCellAt(pos).resetShape(pos.shapeId <= 3 ? "BENT" : "STRAIGHT", pos.shapeId <= 3 ? 90 * pos.shapeId: 90 * (pos.shapeId - 4))
+        });
+    };
+
+
+
+
+    eventEmitter.subscribe('render-my-rotate', myRotate);
     eventEmitter.subscribe('render-turn', turn);
-    // eventEmitter.subscribe('render-add');
+    eventEmitter.subscribe('render-add', add);
     eventEmitter.subscribe('render-init', init);
 });

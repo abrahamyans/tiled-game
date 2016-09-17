@@ -21,6 +21,5 @@ define(['event-emitter', 'jquery'] , function (eventEmitter, $) {
 
 
     eventEmitter.subscribe('added', addPlayersToList);
-    eventEmitter.emit('add', null, true);
 
 });
