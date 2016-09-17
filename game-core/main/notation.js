@@ -8,22 +8,26 @@ var dir = {
     up: {
         r: -1,
         c: 0,
-        name: "Up"
+        name: "up",
+        opposite: "bottom",
     },
     right: {
         r: 0,
         c: 1,
-        name: "Right"
+        name: "right",
+        opposite: "left"
     },
     bottom: {
         r: 1,
         c: 0,
-        name: "Bottom"
+        name: "bottom",
+        opposite: "up"
     },
     left: {
         r: 0,
         c: -1,
-        name: "Left"
+        name: "left",
+        opposite: "right"
     }
 };
 

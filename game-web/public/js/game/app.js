@@ -12,13 +12,15 @@ requirejs.config({
         "jquery": "https://code.jquery.com/jquery-3.1.0",
         "io": "https://cdn.socket.io/socket.io-1.4.5",
 
-        "page-controller": "page-controller",
-        "ui-config": "ui-config",
-        "game-renderer": "game-renderer",
-        "socket-client": "socket-client",
-        "event-emitter": "event-emitter",
         "cell-notation": "cell-notation",
-        "Cell": "Cell"
+        "Cell": "Cell",
+        "event-emitter": "event-emitter",
+        "ui-config": "ui-config",
+
+        "socket-client": "socket-client",
+        "game-controller": "game-controller",
+        "page-controller": "page-controller",
+        "game-renderer": "game-renderer"
 
     },
     "shim": {
@@ -33,8 +35,13 @@ requirejs.config({
 require([
     "event-emitter",
     "socket-client",
-    "page-controller"
+    "page-controller",
+    "game-controller",
+    "game-renderer"
 ], function (eventEmitter, socketClient) {
     socketClient.connect();
-    eventEmitter.emit('add', null, true);
+    eventEmitter.emit('add', {
+        roomAlias: "test",
+        name: Math.random().toString(36).substring(7)
+    }, true);
 });

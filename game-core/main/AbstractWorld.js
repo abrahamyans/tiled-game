@@ -4,6 +4,7 @@
 
 "use strict";
 var shapes = require('./notation').shapes;
+var directions = require('./notation').dir;
 var Chance = require('chance');
 var Cell = require('./Cell');
 var Queue = require('double-ended-queue');
@@ -58,8 +59,8 @@ class AbstractWorld {
             throw new Error( errors.CLICK_AT_UNOWNED_CELL);
     }
 
-    _performBfs(pos) {
-        this._validateClickPos(pos);
+    _performBfs(clickPos) {
+        this._validateClickPos(clickPos);
         var bfs = (() => {
             var visitedPath = {};
             var cells = [];
@@ -82,10 +83,11 @@ class AbstractWorld {
         })();
 
         var queue = new Queue();
-        queue.push(pos);
+        queue.enqueue(clickPos);
         var cell;
+        var pos;
         while (!queue.isEmpty()) {
-            pos = queue.pop();
+            pos = queue.dequeue();
             cell = this._getCellReference(pos);
             bfs.markAsVisited(cell, pos);
             var shape = shapes[cell.shapeId];
@@ -93,11 +95,18 @@ class AbstractWorld {
                 .map((dir) => {
                     return {
                         row: pos.row + dir.r,
-                        col: pos.col + dir.c
+                        col: pos.col + dir.c,
+                        connectedBy: dir.name
                     }
                 })
                 .filter((nextPos) => {
                     return this._isWithinBounds(nextPos) && !bfs.isVisited(nextPos)
+                })
+                .filter((nextPos) => {
+                    var nextShape = shapes[this._getCellReference(nextPos).shapeId];
+                    return nextShape.con.reduce((wasConnected, con) => {
+                        return wasConnected || con.opposite === nextPos.connectedBy
+                    }, false);
                 })
                 .forEach((nextPos) => {
                     queue.push(nextPos);

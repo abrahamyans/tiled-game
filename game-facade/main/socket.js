@@ -25,7 +25,7 @@ module.exports = function (server) {
 
             try {
                 var room = roomManager.getRoomByAlias(params.roomAlias);
-                var player = room.addPlayer(params);
+                var player = room.addPlayer(params.name);
             } catch (err) {
                 return socket.emit('err', {status: "PLAYER_NOT_ADDED", message: err.message})
             }
