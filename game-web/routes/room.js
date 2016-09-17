@@ -10,7 +10,7 @@ var logger = require('log4js').getLogger(module.filename);
 var util = require('util');
 logger.info('Mounting router for /room');
 
-route.put('/', (req, res) => {
+route.post('/', (req, res) => {
 
     req.checkBody({
         rows: {
@@ -45,7 +45,7 @@ route.put('/', (req, res) => {
 
     roomManager.addRoom(req.body);
     return res.status(200).json({
-        status: "OK"
+        alias: req.body.alias
     });
 });
 

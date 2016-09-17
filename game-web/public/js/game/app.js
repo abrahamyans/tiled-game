@@ -41,7 +41,7 @@ require([
 ], function (eventEmitter, socketClient) {
     socketClient.connect();
     eventEmitter.emit('add', {
-        roomAlias: "test",
+        roomAlias: window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1),
         name: Math.random().toString(36).substring(7)
     }, true);
 });
