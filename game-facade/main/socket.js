@@ -4,7 +4,7 @@
 
 "use strict";
 
-var logger = require('log4js').getLogger(__filename);
+var logger = require('log4js').getAppLogger(__filename);
 var roomManager = require('../../game-rooms').roomManager;
 
 
