@@ -19,10 +19,14 @@ define(["jquery"], function ($) {
             .done(function (data) {
                 console.log(data);
                 var url = $("#url");
+                url.show();
                 url.prop("href", window.location.origin + "/room/" + data.alias);
-                url.append("Click here to start playing");
-            })
+            });
+        $("#url").hide();
+
+
     });
 
+    $("#url").hide();
 
 });
