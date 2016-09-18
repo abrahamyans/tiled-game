@@ -1,23 +1,14 @@
 link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+link(rel="stylesheet" href="/css/room-page.css")
 
-
-div
-	| Rows:
-	br
-	input(type = "number" id="rows")
-	br
-	| Columns:
-	br
-	input(type = "number" id="cols")
-	br
-	| Name:
-	br
-	input(type="text", id="name")
-	br
-	br
-	input(type = "button" value = "Turn" id="submit")
-
-a#url
+.form-wrapper
+	b
+		.title.centered Create a room
+	input.centered(type = "number" id="rows" value="Rows" onfocus="if (this.value == 'Enter username..') this.value=''" onkeypress='return event.charCode >= 48 && event.charCode <= 57')
+	input.centered(type = "number" id="cols" value="Columns" onfocus="if (this.value == 'Enter username..') this.value=''" onkeypress='return event.charCode >= 48 && event.charCode <= 57')
+	input.centered(type="text" id="name" value="Room name (optional)" onfocus="if (this.value == 'Enter username..') this.value=''")
+	input.centered(type = "button" value = "Create" id="submit")
+	a#url.centered(style="display:none") Start playing!
 
 
 
