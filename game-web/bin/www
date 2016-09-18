@@ -6,7 +6,7 @@
 
 var app = require('../app');
 var http = require('http');
-var logger = require('log4js').getLogger(module.filename);
+var logger = require('log4js').getAppLogger(module.filename);
 /**
  * Get port from environment and store in Express.
  */

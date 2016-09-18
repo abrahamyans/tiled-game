@@ -2,11 +2,16 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
-var logger = require('log4js').getLogger(__filename);
+var log4js = require('log4js');
 var cookieParser = require('cookie-parser');
 var validator = require('express-validator');
 var bodyParser = require('body-parser');
 
+var rootPath = process.cwd();
+log4js.getAppLogger = function(filePath){
+    return log4js.getLogger(filePath.replace(rootPath, ""));
+};
+var logger = log4js.getAppLogger(__filename);
 logger.info("Initializing the express app");
 
 var app = express();

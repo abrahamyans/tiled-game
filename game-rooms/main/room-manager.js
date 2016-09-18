@@ -6,7 +6,7 @@
 var Room = require('./Room');
 var SimpleStrategyWorld = require('../../game-core').SimpleStrategyWorld;
 var idGenerator = require('./id-generator');
-var logger = require('log4js').getLogger(__filename);
+var logger = require('log4js').getAppLogger(__filename);
 var strategies ={
     "simple": SimpleStrategyWorld
 };

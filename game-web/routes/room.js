@@ -6,7 +6,7 @@
 var express = require('express');
 var route = express.Router();
 var roomManager = require('../../game-rooms').roomManager;
-var logger = require('log4js').getLogger(module.filename);
+var logger = require('log4js').getAppLogger(module.filename);
 var util = require('util');
 logger.info('Mounting router for /room');
 
