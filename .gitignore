@@ -1,4 +1,4 @@
 node_modules
 .idea
 nodemon.sh
-node_modules
+.DS_Store
