@@ -68,14 +68,16 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
 
     prototype._processAnimationQueue = function(){
         var self = this;
+        var queue = this.animationQueue;
+        var animationRequest = queue[0];
         createjs.Tween.get(this)
-            .to({rotation: (this.rotation + 90)}, config.myRotateAnimationDuration, createjs.Ease.sineInOut)
+            .to({rotation: (this.rotation + 90)}, animationRequest.duration, createjs.Ease.sineInOut)
             .call(function () {
                 self.rotation %= 360;
-                var completedAnimationRequest = self.animationQueue.shift();
-                if (completedAnimationRequest.callback)
-                    completedAnimationRequest.callback();
-                if (self.animationQueue.length != 0)
+                queue.shift();
+                if (animationRequest.callback)
+                    animationRequest.callback();
+                if (queue.length != 0)
                     self._processAnimationQueue();
             })
     };
@@ -92,8 +94,8 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
     };
 
 
-    prototype.rotate = function (callback) {
-        this.animationQueue.push({callback: callback});
+    prototype.rotate = function (params, callback) {
+        this.animationQueue.push({callback: callback, duration: params.duration});
         if (this.animationQueue.length == 1)
             this._processAnimationQueue();
     };
