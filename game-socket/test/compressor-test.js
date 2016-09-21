@@ -9,7 +9,7 @@ describe("Compressor test", () => {
 
     var compressor = Compressor(10, 20);
 
-    it("encode/decode client request", () => {
+    it("Encode/decode client request", () => {
         var client = {
             raw: {
                 row: 2, col: 5
@@ -22,7 +22,7 @@ describe("Compressor test", () => {
     });
     
     
-    it("encode/decode server response", () => {
+    it("Encode/decode server response", () => {
         var server = {
             raw: {
                 rotate: {

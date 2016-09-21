@@ -17,6 +17,7 @@ requirejs.config({
         "event-emitter": "event-emitter",
         "ui-config": "ui-config",
 
+        "Compressor": "Compressor",
         "socket-client": "socket-client",
         "game-controller": "game-controller",
         "page-controller": "page-controller",
@@ -24,7 +25,7 @@ requirejs.config({
 
     },
     "shim": {
-        "socket-client": ["io", "event-emitter"],
+        "socket-client": ["io", "event-emitter", "Compressor"],
         "game-controller": ["event-emitter", "cell-notation"],
         "page-controller": ["event-emitter", "jquery"],
         "game-renderer": ["event-emitter", "ui-config", "jquery"],

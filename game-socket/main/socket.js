@@ -7,6 +7,7 @@
 var logger = require('log4js').getAppLogger(__filename);
 var roomManager = require('../../game-rooms').roomManager;
 
+var Compressor = require('./Compressor');
 
 module.exports = function (server) {
     var io = require('socket.io')(server);
@@ -29,9 +30,11 @@ module.exports = function (server) {
             } catch (err) {
                 return socket.emit('err', {status: "PLAYER_NOT_ADDED", message: err.message})
             }
+            var roomState = room.getRoomState();
             //Set properties for current client
             socket.roomId = room.id;
             socket.playerPrivateId = player.privateId;
+            socket.compressor = Compressor(roomState.length, roomState[0].length);
             //Join current client to the room
             socket.join(room.id);
             //Respond to the current client
@@ -43,7 +46,7 @@ module.exports = function (server) {
                     name: player.name,
                     initialPositions: player.initialPositions
                 },
-                roomState: room.getRoomState(),
+                roomState: roomState,
                 players: room.getPlayers(),
                 roomId: room.id,
                 roomAlias: room.alias
@@ -60,7 +63,8 @@ module.exports = function (server) {
 
         });
 
-        socket.on('turn', function (turnPos) {
+        socket.on('turn', function (encoded) {
+            var turnPos = socket.compressor.decodeClientRequest(encoded);
             turnPos.row = parseInt(turnPos.row);
             turnPos.col = parseInt(turnPos.col);
             if (!turnPos.hasOwnProperty("row") || !turnPos.hasOwnProperty('col')){
@@ -72,7 +76,7 @@ module.exports = function (server) {
             try{
                 var room = roomManager.getRoom(socket.roomId);
                 var turnResult = room.onTurn(turnPos, socket.playerPrivateId);
-                io.in(room.id).emit('turned', turnResult);
+                io.in(room.id).emit('turned', socket.compressor.encodeServerResponse(turnResult));
             }catch(err){
                 return socket.emit('err', {status: "FAILED_TURN", message: err.message});
             }

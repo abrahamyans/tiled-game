@@ -4,18 +4,20 @@
 
 "use strict";
 
-define(['io', 'event-emitter'], function(io, eventEmitter){
+define(['io', 'event-emitter', 'Compressor'], function(io, eventEmitter, Compressor){
 
     return {
         connect: function(){
 
             var socket = io();
-
+            var compressor;
             socket.on("added", function (data) {
+                compressor = Compressor(data.roomState.length, data.roomState[0].length);
                 eventEmitter.emit("added", data, true);
             });
 
-            socket.on("turned", function (data) {
+            socket.on("turned", function (encoded) {
+                var data = compressor.decodeServerResponse(encoded);
                 eventEmitter.emit("turned", data, true);
             });
 
@@ -30,7 +32,8 @@ define(['io', 'event-emitter'], function(io, eventEmitter){
 
 
             eventEmitter.subscribe("turn", function(data){
-                socket.emit('turn', data);
+                var encoded = compressor.encodeClientRequest(data);
+                socket.emit('turn', encoded);
             });
 
             eventEmitter.subscribe("err", function(data){

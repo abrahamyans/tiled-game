@@ -16,11 +16,12 @@ requirejs.config({
         "test-page-controller": "test-page-controller",
         "socket-client": "../socket-client",
         "event-emitter": "../event-emitter",
+        "Compressor": "../Compressor",
 
     },
     "shim": {
         "jquery-json-view": ["jquery"],
-        "socket-client": ["io", "event-emitter"],
+        "socket-client": ["io", "event-emitter", "Compressor"],
         "test-page-controller": ["socket-client", "jquery-json-view", "event-emitter"]
     }
 });
