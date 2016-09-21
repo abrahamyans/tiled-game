@@ -61,7 +61,7 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
                     col: c,
                     color: cell.color ? cell.color : config.emptyColor,
                     shapeType: cell.shapeId <= 3 ? "BENT" : "STRAIGHT",
-                    rotation: cell.shapeId <= 3 ? 90 * cell.shapeId: 90 * (cell.shapeId - 4),
+                    rotation: cell.shapeId <= 3 ? 90 * cell.shapeId : 90 * (cell.shapeId - 4),
                     shapeWidth: dimens.shapeWidth,
                     size: dimens.cellSize
                 });
@@ -79,13 +79,13 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
 
     var turn = function (turn) {
-        if (turn.dontRotate === true){
+        if (turn.dontRotate === true) {
             turn.changeColor.forEach(function (pos) {
                 stage.getCellAt(pos).changeColor(pos.color);
             });
 
-        }else {
-            stage.getCellAt(turn.rotate).rotate(function(){
+        } else {
+            stage.getCellAt(turn.rotate).rotate({duration: config.rotateAnimationDuration}, function () {
                 turn.changeColor.forEach(function (pos) {
                     stage.getCellAt(pos).changeColor(pos.color);
                 });
@@ -94,20 +94,18 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
     };
 
 
-    var myRotate = function(pos){
-        stage.getCellAt(pos).rotate();
+    var myRotate = function (pos) {
+        stage.getCellAt(pos).rotate({duration: config.myRotateAnimationDuration});
     };
 
-    var add = function(add) {
-        add.changeColor.forEach(function(pos){
+    var add = function (add) {
+        add.changeColor.forEach(function (pos) {
             stage.getCellAt(pos).changeColor(pos.color);
         });
-        add.changeShape.forEach(function(pos){
-            stage.getCellAt(pos).resetShape(pos.shapeId <= 3 ? "BENT" : "STRAIGHT", pos.shapeId <= 3 ? 90 * pos.shapeId: 90 * (pos.shapeId - 4))
+        add.changeShape.forEach(function (pos) {
+            stage.getCellAt(pos).resetShape(pos.shapeId <= 3 ? "BENT" : "STRAIGHT", pos.shapeId <= 3 ? 90 * pos.shapeId : 90 * (pos.shapeId - 4))
         });
     };
-
-
 
 
     eventEmitter.subscribe('render-my-rotate', myRotate);

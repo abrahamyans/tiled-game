@@ -11,7 +11,7 @@ define(function () {
         emptyColor: "#414141",
         shapeWidthRatio: 0.25,
         cellBackgroundColor: "#333",
-        myRotateAnimationDuration: 130,
-        rotateAnimationDuration: 80
+        myRotateAnimationDuration: 50,
+        rotateAnimationDuration: 1000
     }
 });
