@@ -104,8 +104,3 @@ define(function(){
         };
     };
 });
-
-
-
-
-module.exports = Compressor;
