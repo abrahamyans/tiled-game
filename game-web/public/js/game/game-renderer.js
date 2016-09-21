@@ -85,7 +85,7 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
             });
 
         }else {
-            stage.getCellAt(turn.rotate).rotate(false, function(){
+            stage.getCellAt(turn.rotate).rotate(function(){
                 turn.changeColor.forEach(function (pos) {
                     stage.getCellAt(pos).changeColor(pos.color);
                 });
@@ -95,7 +95,7 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
 
     var myRotate = function(pos){
-        stage.getCellAt(pos).rotate(true);
+        stage.getCellAt(pos).rotate();
     };
 
     var add = function(add) {
