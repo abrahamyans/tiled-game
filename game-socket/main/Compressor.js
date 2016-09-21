@@ -32,7 +32,7 @@ var Compressor = function(rows, cols){
 
     function responseModel(){
         return {
-            rot: [],
+            rotate: [],
             chown: []
         }
     }
@@ -47,11 +47,11 @@ var Compressor = function(rows, cols){
 
         encodeServerResponse: function(obj){
             var encoded = "";
-            if (obj.rot.length == 0)
+            if (obj.rotate.length == 0)
                 return encoded;
 
 
-            encoded += String.fromCharCode(encodePair(obj.rot.row, obj.rot.col) );
+            encoded += String.fromCharCode(encodePair(obj.rotate.row, obj.rotate.col) );
             var i;
             for (i in obj.chown){
                 var code = encodePair(obj.chown[i].row, obj.chown[i].col);
@@ -68,7 +68,7 @@ var Compressor = function(rows, cols){
                 return decoded;
 
             var rotateTile = decodePair(encoded.charCodeAt(0));
-            decoded.rot = {row: rotateTile.row, col: rotateTile.col};
+            decoded.rotate = {row: rotateTile.row, col: rotateTile.col};
 
 
 

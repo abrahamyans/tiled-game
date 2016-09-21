@@ -25,7 +25,7 @@ describe("Compressor test", () => {
     it("encode/decode server response", () => {
         var server = {
             raw: {
-                rot: {
+                rotate: {
                     row: 2, col: 5
                 },
                 chown: [
