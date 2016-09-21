@@ -35,7 +35,6 @@ define(['io', 'event-emitter'], function(io, eventEmitter){
 
             eventEmitter.subscribe("err", function(data){
                 console.log(data);
-                // window.alert("Please report this message to Smehsn\n"+JSON.stringify(data, null, 3));
             })
 
         }
