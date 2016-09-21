@@ -25,11 +25,11 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
         this.rotation = notEmpty(properties.rotation);
         this.rectWidth = Math.sqrt(Math.pow(this.size / 2, 2) - Math.pow(this.shapeWidth / 2, 2));
         this.shape = new createjs.Shape();
-        this.lock = false;
+        this.animationQueue = [];
 
         this.addChild(this._initShape(this.shape));
 
-        this.on("click", this.onClick);
+        this.on("click", this._onClick);
 
         createjs.Ticker.setFPS(60);
 
@@ -37,14 +37,12 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
 
     var prototype = createjs.extend(Cell, createjs.Container);
 
-    prototype.onClick = function () {
-        if (this.lock == false){
+    prototype._onClick = function () {
+        if (this.animationQueue.length == 0){
             eventEmitter.emit('click', {row: this.row, col: this.col});
         }
-        else{
-            console.log("Tile is locked, cant click")
-        }
     };
+
 
     prototype._initShape = function (shape) {
         shape.graphics.beginFill(config.cellBackgroundColor).drawCircle(this.size / 2, this.size / 2, this.size / 2);
@@ -68,6 +66,20 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
             .beginFill(this.color).drawRect(this.size / 2 - this.shapeWidth / 2, this.size / 2 - this.rectWidth, this.shapeWidth, this.rectWidth * 2);
     };
 
+    prototype._processAnimationQueue = function(){
+        var self = this;
+        createjs.Tween.get(this)
+            .to({rotation: (this.rotation + 90)}, config.myRotateAnimationDuration, createjs.Ease.sineInOut)
+            .call(function () {
+                self.rotation %= 360;
+                var completedAnimationRequest = self.animationQueue.shift();
+                if (completedAnimationRequest.callback)
+                    completedAnimationRequest.callback();
+                if (self.animationQueue.length != 0)
+                    self._processAnimationQueue();
+            })
+    };
+
     prototype.changeColor = function (color) {
         this.color = color;
         this._initShape(this.shape);
@@ -79,21 +91,11 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
         this._initShape(this.shape);
     };
 
-    prototype.rotate = function ( lock, callback) {
-        var self = this;
-        if (lock){
-            this.lock = true;
-            
-        }
-        createjs.Tween.get(this)
-            .to({rotation: (this.rotation + 90)}, config.myRotateAnimationDuration, createjs.Ease.sineInOut)
-            .call(function () {
-                self.rotation %= 360;
-                self.lock = false;
-                console.log("Unlocked");
-                if (callback)
-                    callback();
-            })
+
+    prototype.rotate = function (callback) {
+        this.animationQueue.push({callback: callback});
+        if (this.animationQueue.length == 1)
+            this._processAnimationQueue();
     };
 
 
