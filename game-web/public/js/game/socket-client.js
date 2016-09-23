@@ -12,7 +12,10 @@ define(['io', 'event-emitter', 'Compressor'], function(io, eventEmitter, Compres
             var socket = io();
             var compressor;
             socket.on("added", function (data) {
-                compressor = Compressor(data.roomState.length, data.roomState[0].length);
+                //If this is the first added event then initialize compressor
+                if (data.roomState) {
+                    compressor = Compressor(data.roomState.length, data.roomState[0].length);
+                }
                 eventEmitter.emit("added", data, true);
             });
 
