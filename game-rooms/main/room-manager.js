@@ -16,18 +16,8 @@ class RoomManager{
     constructor(){
         this._rooms = {};
         this._roomByAlias = {};
-        this.setupTestRoom();
     }
 
-    setupTestRoom(){
-        this.addRoom({
-            rows: 10,
-            cols: 20,
-            strategy: "simple",
-            alias: "test"
-        })
-    }
-    
     addRoom(params){
         if (!params.alias){
             throw new Error("Alias name is not specified");

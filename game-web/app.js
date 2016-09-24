@@ -39,6 +39,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Test routes
 if (app.get('env') === 'development'){
     var roomManager = require('../game-rooms').roomManager;
+
+    function setupTestRoom(){
+        roomManager.addRoom({
+            rows: 10,
+            cols: 20,
+            strategy: "simple",
+            alias: "test"
+        })
+    }
+    setupTestRoom();
     //Socket test routes
     app.get('/room-test', (req, res) => {
         logger.info('Requested socket integration test page');
@@ -48,7 +58,7 @@ if (app.get('env') === 'development'){
     app.get('/room/test/reset', (req, res) => {
         logger.info("Resetting socket integration test");
         roomManager.removeRoomByAlias('test');
-        roomManager.setupTestRoom();
+        setupTestRoom();
         res.status(200).send();
 
     });

@@ -31,7 +31,6 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
 
         this.on("click", this._onClick);
 
-        createjs.Ticker.setFPS(60);
 
     }
 
