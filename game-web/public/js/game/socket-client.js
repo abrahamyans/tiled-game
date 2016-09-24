@@ -19,7 +19,8 @@ define(['io', 'event-emitter', 'Compressor'], function (io, eventEmitter, Compre
                 eventEmitter.emit("added", data, true);
             });
 
-            socket.on("turned", function (encoded) {
+            //response
+            socket.on("r", function (encoded) {
                 var data = compressor.decodeServerResponse(encoded);
                 eventEmitter.emit("turned", data, true);
             });
@@ -34,7 +35,8 @@ define(['io', 'event-emitter', 'Compressor'], function (io, eventEmitter, Compre
 
             eventEmitter.subscribe("turn", function (data) {
                 var encoded = compressor.encodeClientRequest(data);
-                socket.emit('turn', encoded);
+                //turn
+                socket.emit('t', encoded);
             });
 
             eventEmitter.subscribe("err", function (data) {

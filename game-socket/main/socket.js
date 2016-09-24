@@ -63,7 +63,7 @@ module.exports = function (server) {
 
         });
 
-        socket.on('turn', function (encoded) {
+        socket.on('t', function (encoded) {
             var turnPos = socket.compressor.decodeClientRequest(encoded);
             if (!turnPos.hasOwnProperty("row") || !turnPos.hasOwnProperty('col')) {
                 return socket.emit('err', {
@@ -82,7 +82,7 @@ module.exports = function (server) {
                     return;
                 }
                 var turnResult = room.onTurn(turnPos, socket.playerPrivateId);
-                io.in(room.id).emit('turned', socket.compressor.encodeServerResponse(turnResult));
+                io.in(room.id).emit('r', socket.compressor.encodeServerResponse(turnResult));
             } catch (err) {
                 return socket.emit('err', {status: "FAILED_TURN", message: err.message});
             }
