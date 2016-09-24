@@ -121,6 +121,7 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
      * }
      */
     var onTurn = function(turn){
+        console.log("Turn response - " + new Date().getTime());
         var rotatedCell = grid.cellAt(turn.rotate);
         rotatedCell.shapeId = notation.shapes[rotatedCell.shapeId].rot;
         turn.chown.forEach(function(chownPos){
@@ -144,10 +145,13 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
     };
 
     var onClickVerified = function (isVerified) {
+        console.log("Verification response - " + new Date().getTime());
+
         var position = clickRequestQueue.shift();
         if(isVerified)
             eventEmitter.emit('render-my-rotate', position);
-        console.log("Clicked at position " + JSON.stringify(position) + "but was not verified");
+        else
+            console.log("Clicked at position " + JSON.stringify(position) + "but was not verified");
     };
 
 
