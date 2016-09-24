@@ -30,7 +30,7 @@ define(['event-emitter', 'ui-config'], function (eventEmitter, config) {
         this.addChild(this._initShape(this.shape));
 
         this.on("click", this._onClick);
-
+        createjs.Ticker.setFPS(60);
 
     }
 
