@@ -28,10 +28,6 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
      * Holds a reference to the current player
      */
     var myPlayer;
-    /**
-     * Queue of all requested click positions waiting for approval
-     */
-    var clickRequestQueue = [];
 
 
     var initializeGrid = function(addedPlayerResponse){
@@ -121,7 +117,6 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
      * }
      */
     var onTurn = function(turn){
-        console.log("Turn response - " + new Date().getTime());
         var rotatedCell = grid.cellAt(turn.rotate);
         rotatedCell.shapeId = notation.shapes[rotatedCell.shapeId].rot;
         turn.chown.forEach(function(chownPos){
@@ -129,7 +124,6 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         });
 
         eventEmitter.emit('render-turn', {
-            dontRotate: rotatedCell.playerId == myPlayer.publicId,
             rotate: {
                 row: turn.rotate.row,
                 col: turn.rotate.col
@@ -144,23 +138,11 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         });
     };
 
-    var onClickVerified = function (isVerified) {
-        console.log("Verification response - " + new Date().getTime());
-
-        var position = clickRequestQueue.shift();
-        if(isVerified)
-            eventEmitter.emit('render-my-rotate', position);
-        else
-            console.log("Clicked at position " + JSON.stringify(position) + "but was not verified");
-    };
-
-
     //Event handlers
     eventEmitter.subscribe('click', function(pos){
         if (grid.cellAt(pos).playerId !== myPlayer.publicId){
             return;
         }
-        clickRequestQueue.push(pos);
         eventEmitter.emit('turn', {
             row: pos.row,
             col: pos.col
@@ -175,7 +157,6 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         }
     });
 
-    eventEmitter.subscribe('verify', onClickVerified);
     eventEmitter.subscribe('turned', onTurn);
 
 });

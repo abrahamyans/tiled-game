@@ -79,10 +79,8 @@ module.exports = function (server) {
                 var room = roomManager.getRoom(socket.roomId);
                 //Check if the click is authorized
                 if (!room.isCellOwnedBy(turnPos, socket.playerPrivateId)) {
-                    socket.emit('verify', 0);
                     return;
                 }
-                socket.emit('verify', 1);
                 var turnResult = room.onTurn(turnPos, socket.playerPrivateId);
                 io.in(room.id).emit('turned', socket.compressor.encodeServerResponse(turnResult));
             } catch (err) {

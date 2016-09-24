@@ -79,24 +79,13 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
 
 
     var turn = function (turn) {
-        if (turn.dontRotate === true) {
+        stage.getCellAt(turn.rotate).rotate({duration: config.rotateAnimationDuration}, function () {
             turn.changeColor.forEach(function (pos) {
                 stage.getCellAt(pos).changeColor(pos.color);
             });
-
-        } else {
-            stage.getCellAt(turn.rotate).rotate({duration: config.rotateAnimationDuration}, function () {
-                turn.changeColor.forEach(function (pos) {
-                    stage.getCellAt(pos).changeColor(pos.color);
-                });
-            });
-        }
+        });
     };
 
-
-    var myRotate = function (pos) {
-        stage.getCellAt(pos).rotate({duration: config.myRotateAnimationDuration});
-    };
 
     var add = function (add) {
         add.changeColor.forEach(function (pos) {
@@ -108,7 +97,6 @@ define(['event-emitter', 'ui-config', 'jquery', 'Cell'], function (eventEmitter,
     };
 
 
-    eventEmitter.subscribe('render-my-rotate', myRotate);
     eventEmitter.subscribe('render-turn', turn);
     eventEmitter.subscribe('render-add', add);
     eventEmitter.subscribe('render-init', init);

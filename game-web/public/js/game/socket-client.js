@@ -28,14 +28,9 @@ define(['io', 'event-emitter', 'Compressor'], function (io, eventEmitter, Compre
                 eventEmitter.emit("err", data, true);
             });
 
-            socket.on('verify', function (isVerified) {
-                eventEmitter.emit('verify', isVerified, true);
-            });
-
             eventEmitter.subscribe("add", function (data) {
                 socket.emit('add', data);
             });
-
 
             eventEmitter.subscribe("turn", function (data) {
                 var encoded = compressor.encodeClientRequest(data);
