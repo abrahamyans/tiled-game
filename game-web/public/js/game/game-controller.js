@@ -28,6 +28,10 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
      * Holds a reference to the current player
      */
     var myPlayer;
+    /**
+     * Queue of all requested click positions waiting for approval
+     */
+    var clickRequestQueue = [];
 
 
     var initializeGrid = function(addedPlayerResponse){
@@ -139,12 +143,20 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         });
     };
 
+    var onClickVerified = function (isVerified) {
+        var position = clickRequestQueue.shift();
+        if(isVerified)
+            eventEmitter.emit('render-my-rotate', position);
+        console.log("Clicked at position " + JSON.stringify(position) + "but was not verified");
+    };
+
+
     //Event handlers
     eventEmitter.subscribe('click', function(pos){
         if (grid.cellAt(pos).playerId !== myPlayer.publicId){
             return;
         }
-        eventEmitter.emit('render-my-rotate', pos);
+        clickRequestQueue.push(pos);
         eventEmitter.emit('turn', {
             row: pos.row,
             col: pos.col
@@ -159,6 +171,7 @@ define(['event-emitter', 'cell-notation'], function(eventEmitter, notation){
         }
     });
 
+    eventEmitter.subscribe('verify', onClickVerified);
     eventEmitter.subscribe('turned', onTurn);
 
 });

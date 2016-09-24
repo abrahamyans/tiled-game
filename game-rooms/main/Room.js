@@ -60,6 +60,9 @@ class Room{
         return this._world.onTurn(pos);
     }
 
+    isCellOwnedBy(pos, playerPrivateId){
+        return this._world.getPlayerIdAt(pos) === this.players[playerPrivateId].publicId;
+    }
 
     getRoomState(){
         return this._world.getWorldState();

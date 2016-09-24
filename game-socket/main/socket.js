@@ -65,19 +65,27 @@ module.exports = function (server) {
 
         socket.on('turn', function (encoded) {
             var turnPos = socket.compressor.decodeClientRequest(encoded);
-            turnPos.row = parseInt(turnPos.row);
-            turnPos.col = parseInt(turnPos.col);
-            if (!turnPos.hasOwnProperty("row") || !turnPos.hasOwnProperty('col')){
+            if (!turnPos.hasOwnProperty("row") || !turnPos.hasOwnProperty('col')) {
                 return socket.emit('err', {
                     status: "ILLEGAL_ARGUMENT",
                     message: "Properties row and col are required and should be integers"
                 })
             }
-            try{
+            turnPos.row = parseInt(turnPos.row);
+            turnPos.col = parseInt(turnPos.col);
+
+
+            try {
                 var room = roomManager.getRoom(socket.roomId);
+                //Check if the click is authorized
+                if (!room.isCellOwnedBy(turnPos, socket.playerPrivateId)) {
+                    socket.emit('verify', 0);
+                    return;
+                }
+                socket.emit('verify', 1);
                 var turnResult = room.onTurn(turnPos, socket.playerPrivateId);
                 io.in(room.id).emit('turned', socket.compressor.encodeServerResponse(turnResult));
-            }catch(err){
+            } catch (err) {
                 return socket.emit('err', {status: "FAILED_TURN", message: err.message});
             }
         });
